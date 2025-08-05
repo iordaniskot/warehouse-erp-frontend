@@ -1,0 +1,55 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "inventory": "Inventory",
+    "orders": "Orders",
+    "pos": "Point of Sale",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "products": {
+    "title": "Products",
+    "createProduct": "Create Product",
+    "editProduct": "Edit Product",
+    "productName": "Product Name",
+    "description": "Description",
+    "brand": "Brand",
+    "category": "Category",
+    "sku": "SKU",
+    "barcode": "Barcode",
+    "cost": "Cost",
+    "retailPrice": "Retail Price",
+    "wholesalePrice": "Wholesale Price",
+    "stockQuantity": "Stock Quantity",
+    "status": "Status"
+  },
+  "orders": {
+    "title": "Orders",
+    "createOrder": "Create Order",
+    "orderNumber": "Order Number",
+    "customer": "Customer",
+    "status": "Status",
+    "total": "Total",
+    "items": "Items"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  }
+}

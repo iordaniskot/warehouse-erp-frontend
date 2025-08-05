@@ -1,0 +1,55 @@
+{
+  "navigation": {
+    "dashboard": "Πίνακας Ελέγχου",
+    "products": "Προϊόντα",
+    "inventory": "Απόθεμα",
+    "orders": "Παραγγελίες",
+    "pos": "Ταμείο",
+    "reports": "Αναφορές",
+    "settings": "Ρυθμίσεις"
+  },
+  "common": {
+    "save": "Αποθήκευση",
+    "cancel": "Ακύρωση",
+    "delete": "Διαγραφή",
+    "edit": "Επεξεργασία",
+    "create": "Δημιουργία",
+    "search": "Αναζήτηση",
+    "loading": "Φόρτωση...",
+    "error": "Σφάλμα",
+    "success": "Επιτυχία"
+  },
+  "products": {
+    "title": "Προϊόντα",
+    "createProduct": "Δημιουργία Προϊόντος",
+    "editProduct": "Επεξεργασία Προϊόντος",
+    "productName": "Όνομα Προϊόντος",
+    "description": "Περιγραφή",
+    "brand": "Μάρκα",
+    "category": "Κατηγορία",
+    "sku": "Κωδικός SKU",
+    "barcode": "Barcode",
+    "cost": "Κόστος",
+    "retailPrice": "Τιμή Λιανικής",
+    "wholesalePrice": "Τιμή Χονδρικής",
+    "stockQuantity": "Ποσότητα Αποθέματος",
+    "status": "Κατάσταση"
+  },
+  "orders": {
+    "title": "Παραγγελίες",
+    "createOrder": "Δημιουργία Παραγγελίας",
+    "orderNumber": "Αριθμός Παραγγελίας",
+    "customer": "Πελάτης",
+    "status": "Κατάσταση",
+    "total": "Σύνολο",
+    "items": "Είδη"
+  },
+  "auth": {
+    "login": "Σύνδεση",
+    "logout": "Αποσύνδεση",
+    "email": "Email",
+    "password": "Κωδικός",
+    "signIn": "Είσοδος",
+    "signUp": "Εγγραφή"
+  }
+}

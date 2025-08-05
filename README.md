@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Warehouse ERP Frontend
+
+A modern Next.js 15 frontend application for the Unified Retail & Wholesale Warehouse Management System.
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router & React Server Components
+- **Language**: TypeScript (strict mode)
+- **UI Library**: shadcn/ui (built on Radix UI)
+- **Styling**: Tailwind CSS 4.x with dark/light theme support
+- **Data Fetching**: TanStack Query for caching & optimistic updates
+- **Validation**: Zod for schema validation
+- **Internationalization**: next-intl for SSR-compatible translations (Greek & English)
+
+## Features
+
+Based on the Product Requirements Document (PRD), this frontend supports:
+
+### MVP Features
+- Product catalog CRUD with variants, images, and pricing tiers
+- Stock movements tracking (inbound, outbound, adjustments, multi-warehouse)
+- Point of Sale (POS) module for retail sales
+- Wholesale order entry with tiered pricing & invoices
+- Basic reports (stock on hand, daily sales)
+- User authentication & role-based access control (RBAC)
+
+### Architecture
+- Modern component-based architecture
+- Type-safe API communication
+- Optimistic UI updates
+- Responsive design with 8-point grid system
+- Accessible components following WCAG guidelines
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 20 LTS or higher
+- npm or yarn package manager
 
+### Installation
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                 # Next.js App Router pages
+├── components/          # React components
+│   ├── ui/             # shadcn/ui components
+│   └── providers.tsx   # Context providers
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions and configurations
+│   ├── api.ts         # API client
+│   ├── schemas.ts     # Zod validation schemas
+│   └── utils.ts       # Utility functions
+└── messages/           # Internationalization files
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development Guidelines
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Code Quality
+- TypeScript strict mode enabled
+- ESLint configuration for code quality
+- Prettier for code formatting
+- Component-driven development
 
-## Deploy on Vercel
+### UI/UX Guidelines
+- Consistent spacing using Tailwind scale (4, 8, 12...)
+- 8-point grid system
+- Rounded corners (rounded-2xl) for cards
+- Soft shadows for depth
+- Keyboard shortcuts support (especially for POS)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Performance Targets
+- API response p95 < 200ms
+- POS checkout completion < 3s
+- Support for 100,000 SKUs
+- 50 concurrent POS terminals
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Available Scripts
+
+- `npm run dev` - Start development server with Turbopack
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## API Integration
+
+The frontend communicates with the Express.js backend API. Configure the API base URL in your environment variables:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+```
+
+## Internationalization
+
+The application supports Greek and English languages with:
+- SSR-compatible translations
+- Currency formatting (EUR default)
+- Date/time localization for Europe/Athens timezone
+
+## Contributing
+
+1. Follow the existing code style and patterns
+2. Write TypeScript with strict type checking
+3. Use shadcn/ui components for consistency
+4. Implement responsive designs
+5. Add proper error handling and loading states
+
+## License
+
+This project is part of the Warehouse ERP System and is proprietary software.
