@@ -7,6 +7,8 @@ export const productSchema = z.object({
   description: z.string().optional(),
   categoryId: z.string().optional(),
   brand: z.string().optional(),
+  barcode: z.string().optional(),
+  price: z.number().min(0, 'Price must be positive').optional(),
   skus: z.array(z.object({
     skuCode: z.string().min(1, 'SKU code is required'),
     barcode: z.string().optional(),

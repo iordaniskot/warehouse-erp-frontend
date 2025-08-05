@@ -52,6 +52,8 @@ interface Product {
   name: string
   description?: string
   brand?: string
+  barcode?: string
+  price?: number
   skus: SKU[]
   tags: string[]
   isActive: boolean
@@ -97,6 +99,8 @@ export default function ProductsPage() {
     name: '',
     description: '',
     brand: '',
+    barcode: '',
+    price: 0,
     tags: [] as string[],
     skus: [{
       skuCode: '',
@@ -187,12 +191,88 @@ export default function ProductsPage() {
     }
   })
 
+  // Barcode generation mutation
+  const generateBarcodeMutation = useMutation({
+    mutationFn: () => api.get('/products/generate-barcode'),
+    onSuccess: (response: any) => {
+      const barcode = response.data?.barcode
+      if (barcode) {
+        setFormData(prev => ({ ...prev, barcode }))
+        toast.success('Barcode generated successfully')
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Failed to generate barcode')
+    }
+  })
+
+  // Handler functions
+  const handleGenerateBarcode = () => {
+    generateBarcodeMutation.mutate()
+  }
+
+  const handlePrintBarcode = (barcode: string) => {
+    // Create a print window with barcode
+    const printWindow = window.open('', '_blank', 'width=400,height=300')
+    if (printWindow) {
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Print Barcode</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              height: 100vh;
+              margin: 0;
+            }
+            .barcode-container {
+              text-align: center;
+              border: 1px solid #ccc;
+              padding: 20px;
+              border-radius: 5px;
+            }
+            .barcode-text {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 10px;
+              letter-spacing: 2px;
+            }
+            .barcode-number {
+              font-size: 14px;
+              color: #666;
+            }
+            @media print {
+              body { margin: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="barcode-container">
+            <div class="barcode-text">||||| |||| ||| |||| |||||</div>
+            <div class="barcode-number">${barcode}</div>
+          </div>
+          <button class="no-print" onclick="window.print(); window.close();" style="margin-top: 20px; padding: 10px 20px;">Print</button>
+        </body>
+        </html>
+      `)
+      printWindow.document.close()
+    }
+  }
+
   // Helper functions
   const resetForm = () => {
     setFormData({
       name: '',
       description: '',
       brand: '',
+      barcode: '',
+      price: 0,
       tags: [],
       skus: [{
         skuCode: '',
@@ -230,6 +310,8 @@ export default function ProductsPage() {
   const handleAddProduct = () => {
     resetForm()
     setIsAddDialogOpen(true)
+    // Auto-generate barcode for new products
+    generateBarcodeMutation.mutate()
   }
 
   const handleEditProduct = (product: Product) => {
@@ -238,6 +320,8 @@ export default function ProductsPage() {
       name: product.name,
       description: product.description || '',
       brand: product.brand || '',
+      barcode: product.barcode || '',
+      price: product.price || 0,
       tags: product.tags || [],
       skus: product.skus.map(sku => ({
         skuCode: sku.skuCode,
@@ -510,6 +594,8 @@ export default function ProductsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Product</TableHead>
+                    <TableHead>Barcode</TableHead>
+                    <TableHead>Price</TableHead>
                     <TableHead>SKUs</TableHead>
                     <TableHead>Brand</TableHead>
                     <TableHead>Stock</TableHead>
@@ -529,6 +615,25 @@ export default function ProductsPage() {
                             </div>
                           )}
                         </div>
+                      </TableCell>
+                      <TableCell>
+                        {product.barcode ? (
+                          <div className="flex items-center gap-2">
+                            <code className="bg-muted px-1 py-0.5 rounded text-xs">
+                              {product.barcode}
+                            </code>
+                            <Barcode className="h-3 w-3 text-muted-foreground" />
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground text-sm">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {product.price ? (
+                          <span className="font-medium">${product.price.toFixed(2)}</span>
+                        ) : (
+                          <span className="text-muted-foreground text-sm">-</span>
+                        )}
                       </TableCell>
                       <TableCell>
                         <div className="space-y-1">
@@ -580,6 +685,16 @@ export default function ProductsPage() {
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
+                          {product.barcode && (
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handlePrintBarcode(product.barcode!)}
+                              title="Print Barcode"
+                            >
+                              <Barcode className="h-4 w-4" />
+                            </Button>
+                          )}
                           <Button 
                             variant="outline" 
                             size="sm"
@@ -668,6 +783,52 @@ export default function ProductsPage() {
                       id="brand"
                       value={formData.brand}
                       onChange={(e) => setFormData(prev => ({ ...prev, brand: e.target.value }))}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="barcode">Product Barcode</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="barcode"
+                        value={formData.barcode}
+                        onChange={(e) => setFormData(prev => ({ ...prev, barcode: e.target.value }))}
+                        placeholder="Enter product barcode"
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={handleGenerateBarcode}
+                        className="shrink-0"
+                      >
+                        Generate
+                      </Button>
+                      {formData.barcode && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePrintBarcode(formData.barcode)}
+                          className="shrink-0"
+                        >
+                          Print
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="price">Price</Label>
+                    <Input
+                      id="price"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={formData.price}
+                      onChange={(e) => setFormData(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
+                      placeholder="0.00"
                     />
                   </div>
                 </div>
@@ -997,6 +1158,36 @@ export default function ProductsPage() {
                   <Label className="text-right font-medium">Brand:</Label>
                   <div className="col-span-3">
                     <Badge variant="outline">{selectedProduct.brand}</Badge>
+                  </div>
+                </div>
+              )}
+              {selectedProduct.barcode && (
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="text-right font-medium">Barcode:</Label>
+                  <div className="col-span-3">
+                    <div className="flex items-center gap-2">
+                      <code className="bg-muted px-1 py-0.5 rounded text-xs">
+                        {selectedProduct.barcode}
+                      </code>
+                      <Barcode className="h-3 w-3 text-muted-foreground" />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handlePrintBarcode(selectedProduct.barcode!)}
+                        className="ml-2"
+                      >
+                        Print
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {selectedProduct.price && (
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="text-right font-medium">Price:</Label>
+                  <div className="col-span-3">
+                    <span className="font-medium">${selectedProduct.price.toFixed(2)}</span>
                   </div>
                 </div>
               )}
