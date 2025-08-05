@@ -1,9 +1,24 @@
+'use client'
+
+import { useEffect } from 'react'
+import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { useBreadcrumb } from '@/components/breadcrumb-provider'
 
 export default function Home() {
+  const { setBreadcrumbs } = useBreadcrumb()
+
+  // Set breadcrumbs for this page
+  useEffect(() => {
+    setBreadcrumbs([
+      { title: 'Dashboard', isCurrentPage: true }
+    ])
+  }, [setBreadcrumbs])
+
   return (
-    <div className="container mx-auto p-8">
+    <div className="flex-1 overflow-auto">
+      <div className="container mx-auto p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Warehouse ERP System</h1>
         <p className="text-muted-foreground">
@@ -20,7 +35,9 @@ export default function Home() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full">View Products</Button>
+            <Link href="/products">
+              <Button className="w-full">View Products</Button>
+            </Link>
           </CardContent>
         </Card>
 
@@ -83,6 +100,7 @@ export default function Home() {
             <Button className="w-full">Open Settings</Button>
           </CardContent>
         </Card>
+      </div>
       </div>
     </div>
   )
